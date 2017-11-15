@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="en"><!-- InstanceBegin template="/Templates/cookbooks.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="../css/style.css" />
+<link rel="SHORTCUT ICON" href="http://www.ifm.net.nz/favicon.ico" />
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>IFM - Cisco Password Cracker</title>
+<!-- InstanceEndEditable -->
+<style>
+.hidden { position: relative; display: none; visibility: hidden; }
+.visible { position: relative; display: inline; visibility: visible; }
+.border { border: 1px solid black; padding: 5px; margin: 2px;}
+table {	font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; }
+</style>
+<!-- InstanceBeginEditable name="head" -->
+    <meta name="Description" content="Javascript tool to convert Cisco type 7 encrypted passwords into plain text so that you can read them.  This is done using client side javascript and no information is transmitted over the Internet or to IFM." />
+    <meta name="Keywords" content="Cisco,Password,Cracker,Crack,encrypted,plain text" />
+<!-- InstanceEndEditable -->
+<!-- CSS_ADSBLOCK_START -->
+<link rel="stylesheet" href="http://adblockers.opera-mini.net/css_block/default-domainless.css" type="text/css" />
+<!-- CSS_ADSBLOCK_END -->
+</head>
+<body>
+<div id="wrapper">
+  <div class="img-shadow">
+    <div id="body">
+		<header>
+		<a id="logo" href="/"> <img src="../images/ifm_logo.gif" alt="IFM - Network Experts" width="190" height="106" /> </a>
+		<nav>
+		<a href="#" id="menu-icon"></a>
+		<ul>
+			<li><a href="/" class="current">Home</a></li>
+            <li><a href="../Who-we-are.html">Who we are</a></li>
+			<li><a href="../What-we-do.html">What we do</a></li>
+			<li><a href="../What-we-have-done.html">What we've done</a></li>
+			<li><a href="../Cisco-support.html">Cisco Support</a></li>
+			<li><a href="../amazon-support.html">Amazon Support</a></li>
+			<li><a href="../cisco-and-business-it-support/index.html">help@ifm</a></li>
+			<li><a href="https://aus.myconnectwise.net/IFM">Customer Portal</a></li>
+			<li><a href="../Contact-us/index.html">Contact</a></li>
+		</ul>
+		</nav>
+		</header>
+      <div id="main"><!-- InstanceBeginEditable name="main" -->
+                  	<div itemscope itemtype="http://schema.org/SoftwareApplication" class="widesect">
+					<h2 itemprop="name">Cisco Password Cracker</h2>
+                        <p class="bold"><span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+<span itemprop="name">IFM</span></span> supplies network engineering services for NZ$180+GST per hour.  If you require assistance
+                    with designing or engineering a Cisco network - hire us!</p>
+
+                        <p><strong>Note</strong>: This page uses client side <span itemprop="requirements">Javascript</span>.  It does not transmit
+                        any information entered to IFM.</p>
+
+                        <p>Ever had a type 7 Cisco password that you wanted to crack/break?  This piece of Javascript was inspired
+                        by the WWW page <a href="http://insecure.org/sploits/cisco.passwords.html">http://insecure.org/sploits/cisco.passwords.html</a>.
+                        The passwords will be in lines like:
+                        </p>
+                        <p style="text-indent: 25px;">enable password 7 <span class="red">095C4F1A0A1218000F</span></p>
+      									<p style="text-indent: 25px;">...</p>
+      									<p style="text-indent: 25px;">username <em>user</em> password 7 <span class="red">12090404011C03162E</span></p>
+
+              					<p>Take the type 7 password, such as the text above in red, and paste it into the box below and click &quot;Crack Password&quot;.
+                        </p>
+
+                        <noscript>
+                        <p>This page uses Javascript, and alas, your browser does not support it.</p>
+                        </noscript>
+
+                        <script language="JavaScript1.2" type="text/javascript">
+                        <!--
+                        // Is the character a digit?
+                        function isDigit(theDigit)
+                        {
+                            var digitArray = new Array('0','1','2','3','4','5','6','7','8','9')
+
+                            for (j = 0; j < digitArray.length; j++)  {
+                                if (theDigit == digitArray[j])
+                                    return true
+                            }
+                            return false
+                        }
+
+
+                        // Generate a config file ready for loading
+                        function crackPassword(form)
+                        {
+                            var crypttext=form.crypttext.value.toUpperCase()
+                            var plaintext=''
+                            var xlat="dsfd;kfoA,.iyewrkldJKDHSUBsgvca69834ncxv9873254k;fg87"
+                            var seed, i, val=0
+
+                            if(crypttext.length & 1)
+                                return
+
+                            seed = (crypttext.charCodeAt(0) - 0x30) * 10 + crypttext.charCodeAt(1) - 0x30
+
+                            if (seed > 15 || !isDigit(crypttext.charAt(0)) || !isDigit(crypttext.charAt(1)))
+                                return
+
+                                for (i = 2 ; i <= crypttext.length; i++) {
+                                        if(i !=2 && !(i & 1)) {
+                                                plaintext+=String.fromCharCode(val ^ xlat.charCodeAt(seed++))
+                                    seed%=xlat.length
+                                                val = 0;
+                                        }
+
+                                        val *= 16
+
+                                if(isDigit(crypttext.charAt(i))) {
+                                    val += crypttext.charCodeAt(i) - 0x30
+                                    continue
+                                }
+
+
+                                if(crypttext.charCodeAt(i) >= 0x41 && crypttext.charCodeAt(i) <= 0x46) {
+                                    val += crypttext.charCodeAt(i) - 0x41 + 0x0a
+                                    continue
+                                }
+
+                                if(crypttext.length != i)
+                                    return
+                                }
+
+                            form.plaintext.value=plaintext
+                        }
+
+                        -->
+                        </script>
+
+                        <form name="never-you-mind" id="never-you-mind" action="#">
+                        <table border="1">
+                          <tr><td>
+                        <p>
+                        Type 7 Password:
+                          <input name="crypttext" type="text" size="60" />
+                        </p>
+                        <p>
+                          <input type="button" value="Crack Password" onClick="crackPassword(this.form)" />
+                        </p>
+                        <p>Plain text:
+                          <input name="plaintext" type="text" size="40" />
+                        </p>
+                        </td></tr></table>
+                        </form>
+
+                        <p>
+                        Have you got a type 5 password you want to break?  Try our <a href="cisco-ios-enable-secret-password-cracker.html">Cisco IOS type 5 enable secret password cracker</a> instead..
+                        </p>
+
+                  <h2>What's the moral of the story?</h2>
+                        <p>
+                        Don't use the old type 7 passwords anymore.  Use the new &quot;secret&quot; keyword only.  For example
+                        </p>
+                        <p style="text-indent: 25px;">enable secret <em>password</em><p>
+                        <p style="text-indent: 25px;">...</p>
+                        <p style="text-indent: 25px;">username <em>user</em> secret <em>password</em></p>
+
+                        <p>Refer to the article "<a href="http://www.cisco.com/en/US/tech/tk59/technologies_tech_note09186a00809d38a7.shtml">Cisco IOS Password Encryption Facts</a>" for more information.
+                        <meta itemprop="url" content="http://www.ifm.net.nz/cookbooks/passwordcracker.html"></p>
+			</div>
+ <!-- InstanceEndEditable --><br class="clear" />
+      </div>
+<div itemscope itemtype="http://schema.org/LocalBusiness" id="footer">
+        <p><span itemprop="name">IFM Ltd</span>, <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetAddress">20 Northcroft Street, Takapuna</span>, <span itemprop="addressLocality">Auckland</span>.<br />
+          P.O. Box 331258, Takapuna, Auckland, <span itemprop="addressCountry">New Zealand</span></span></p>
+        <div class="right"> <a href="../Contact-us/">contact us</a></div>
+        <p><strong>tel</strong> <span itemprop="telephone">+64 (9) 912 1932</span></p><meta itemprop="openingHours" dateTime="Mo,Tu,We,Th,Fr 08:30 - 17:00" />        <br class="clear" />
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-9644891-1', 'ifm.net.nz');
+  ga('send', 'pageview');
+
+</script>
+</body>
+<!-- InstanceEnd --></html>
